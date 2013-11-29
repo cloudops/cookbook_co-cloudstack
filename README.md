@@ -36,13 +36,13 @@ Attributes
 
 Attributes can be customized for securty reason. The cookbook does not support encrypted data bag usage for now.
 
-- <tt>node['cloudstack']['repo']</tt> - yum repo url use in <tt>/etc/yum.repo.d/cloudstack.repo</tt>
+- <tt>node['cloudstack']['repo']</tt> - yum repo url to use, default: <tt>http://cloudstack.apt-get.eu/rhel/4.2/</tt>
 - <tt>node['cloudstack']['db']['host']</tt> - cloud mysql host/ip, default = <tt>node['ipaddress']</tt>
 - <tt>node['cloudstack']['db']['user']</tt> - cloud databases mysql user
 - <tt>node['cloudstack']['db']['password']</tt> - cloud databases mysql password
-- <tt>node['cloudstack']['network']['system']['subnet']</tt> - Management network subnet (use for the nfs export) 
 - <tt>node['cloudstack']['db']['rootusername']</tt> - root mysql user
 - <tt>node['cloudstack']['db']['rootpassword']</tt> - root mysql password
+- <tt>node['cloudstack']['network']['system']['subnet']</tt> - Management network subnet (use for the nfs export) 
 - <tt>node['cloudstack']['secondary']['path']</tt> - Local path for the Secondary Storage. default = <tt>/data/secondary</tt>
 
 
