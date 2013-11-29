@@ -7,14 +7,18 @@ This Chef cookbook install Cloudstack based on RPMs and executes folowing steps:
 1. Update yum repo
 2. Install RPMs
 3. Create and initialize database
-4. Generate admin account api keys
+4. Generate admin account api keys `recipe[co-cloudstack::admin-apikey]`
 5. Download system VM template
 6. Configure and export NFS Secondary storage if local
 
 Currently tested on CentOs 6.x x86_64.
 
+
+Originaly this cookbook as not been developped to work with the [community mysql cookbook](http://community.opscode.com/cookbooks/mysql) because of is passwords in clear text in attributes.
+
+
 About Apache Cloudstack
-----------------
+=======================
 
 More info on: http://cloudstack.apache.org/
 
@@ -40,6 +44,59 @@ Attributes can be customized for securty reason. The cookbook does not support e
 - <tt>node['cloudstack']['db']['rootusername']</tt> - root mysql user
 - <tt>node['cloudstack']['db']['rootpassword']</tt> - root mysql password
 - <tt>node['cloudstack']['secondary']['path']</tt> - Local path for the Secondary Storage. default = <tt>/data/secondary</tt>
+
+
+Usage
+-----
+
+##### Create an environment
+The "cloudstack-setup-databases" tool require Mysql to have `allow_remote_root` and `skip-name-resolve` set true to work.
+
+```json
+{
+  "name": "cloudstack-lab",
+  "description": "Cloudstack env.",
+  "default_attributes": {
+    "mysql": {
+      "allow_remote_root": "true",
+      "tunable": {
+        "skip-name-resolve": "true"
+      }
+    }
+  }
+}
+```
+
+##### Create role
+For a node that run cloudstack and is dependency (mysql, nfsserver):
+
+```json
+{
+  "name": "co_cloudstack-lab",
+  "description": "Cloudstack server.",
+  "run_list": [
+    "recipe[mysql::server]",
+    "recipe[co-nfs::server]",
+    "recipe[co-cloudstack]",
+    "recipe[co-cloudstack::admin-apikey]",
+    "recipe[co-cloudmonkey]"
+  ]
+}
+```
+
+##### bootstrap the node
+
+```bash
+knife bootstrap <your node FQDN or IP> \
+    -r 'role[co_cloudstack-lab]' \
+    -E cloudstack-lab \
+    -x root \
+    -P <your root password>
+```
+
+##### test it:
+Access the url: <tt>http://node_ipaddress:8080/client</tt>
+
 
 
 Recipes
@@ -85,48 +142,6 @@ This recipe will run recipe co-nfs::export only if <tt>node['cloudstack']['secon
 #### co-cloudstack::vhd-util
 This recipe download the tool vhd-util required to manage XenServer hosts that is not included in cloudstack RPMs.
 
-
-Usage
------
-
-##### Create an environment
-
-```json
-{
-  "name": "cloudstack-lab",
-  "description": "Cloudstack env."
-}
-```
-
-##### Create role
-For a node that run cloudstack and is dependency (mysql, nfsserver):
-
-```json
-{
-  "name": "co_cloudstack-lab",
-  "description": "Cloudstack server.",
-  "run_list": [
-    "recipe[mysql::server]",
-    "recipe[co-nfs::server]",
-    "recipe[co-cloudstack]",
-    "recipe[co-cloudstack::admin-apikey]",
-    "recipe[co-cloudmonkey]"
-  ]
-}
-```
-
-##### bootstrap the node
-
-```bash
-knife bootstrap <your node FQDN or IP> \
-    -r 'role[co_cloudstack-lab]' \
-    -E cloudstack-lab \
-    -x root \
-    -P <your root password>
-```
-
-##### test it:
-Access the url: <tt>http://node_ipaddress:8080/client</tt>
 
 
 Know issues and limitations
