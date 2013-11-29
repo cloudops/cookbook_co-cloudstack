@@ -27,8 +27,9 @@ Requirements
 
 The following cookbooks are direct dependencies:
 
-- <tt>'database::mysql'</tt> - database library to push data in MySQL.
-- <tt>'co-nfs'</tt> - to configure and export Secondary Storage.
+- <tt>'database::mysql'</tt> - Database libraries to push data in MySQL.
+- <tt>'mysql'</tt> - To install mysql server and libraries.
+- <tt>'co-nfs'</tt> - To configure and export Secondary Storage.
 
 
 Attributes
@@ -36,7 +37,7 @@ Attributes
 
 Attributes can be customized for securty reason. The cookbook does not support encrypted data bag usage for now.
 
-- <tt>node['cloudstack']['repo']</tt> - yum repo url to use, default: <tt>http://cloudstack.apt-get.eu/rhel/4.2/</tt>
+- <tt>node['cloudstack']['repo']</tt> - yum repo url to use, default: http://cloudstack.apt-get.eu/rhel/4.2/
 - <tt>node['cloudstack']['db']['host']</tt> - cloud mysql host/ip, default = <tt>node['ipaddress']</tt>
 - <tt>node['cloudstack']['db']['user']</tt> - cloud databases mysql user
 - <tt>node['cloudstack']['db']['password']</tt> - cloud databases mysql password
