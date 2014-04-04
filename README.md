@@ -1,7 +1,7 @@
 co-cloudstack Cookbook
 ======================
 
-Install and configure Apache Cloudstack cloud orchestrator. This cookbook currently support only Redhat based distro of Linux.
+Install and configure Apache Cloudstack cloud orchestrator. This cookbook currently support only Redhat based distributions of Linux.
 This Chef cookbook install Cloudstack based on RPMs and executes folowing steps:
 
 1. Update yum repo
@@ -14,7 +14,7 @@ This Chef cookbook install Cloudstack based on RPMs and executes folowing steps:
 Currently tested on CentOs 6.x x86_64.
 
 
-Originaly this cookbook as not been developped to work with the [community mysql cookbook](http://community.opscode.com/cookbooks/mysql) because of is passwords in clear text in attributes.
+Originaly this cookbook as not been developped to work with the [community mysql cookbook](http://community.opscode.com/cookbooks/mysql). Warning: this cookbook provide passwords in clear text as attributes.
 
 
 About Apache Cloudstack
@@ -27,8 +27,6 @@ Requirements
 
 The following cookbooks are direct dependencies:
 
-- <tt>'database::mysql'</tt> - Database libraries to push data in MySQL.
-- <tt>'mysql'</tt> - To install mysql server and libraries.
 - <tt>'co-nfs'</tt> - To configure and export Secondary Storage.
 
 
@@ -169,7 +167,7 @@ License and Authors
 - Authors:: Pierre-Luc Dion (<pdion@cloudops.com>)
 
 ```text
-Copyright:: Copyright (c) 2013 CloudOps.com
+Copyright:: Copyright (c) 2014 CloudOps.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -3,6 +3,14 @@ co-cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+2.0.2
+-----
+- Pierre-Luc - change way of generating APIkeys by querying CloudStack API instead of enabling integration api port.
+
+2.0.0
+-----
+- Pierre-Luc - add support for CS 4.3
+
 1.0.0
 -----
 - Pierre-Luc - add vhd-util recipe

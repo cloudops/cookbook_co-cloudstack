@@ -1,24 +1,12 @@
 #
 # Cookbook Name:: co-cloudstack
 # Recipe:: sys-tmpl
-# Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
-# Copyright:: Copyright (c) 2013 CloudOps.com
+# Copyright 2014, Cloudops.com
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# All rights reserved - Do Not Redistribute
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-#
-# Download system template into Secondary Storage.
+
 
 # CONDITION: if template are already downloaded, don't do it again
 template = search(:node, "chef_environment:#{node.chef_environment} AND tags:template_uploaded").count
@@ -52,7 +40,6 @@ if template == 0
     end
   end
 
-  # Update node tags to know templates as been updated.
   ruby_block "template_uploaded" do
     block do
       node.tags << "template_uploaded"

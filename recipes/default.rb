@@ -1,32 +1,17 @@
 #
 # Cookbook Name:: co-cloudstack
 # Recipe:: default
-# Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
-# Copyright:: Copyright (c) 2013 CloudOps.com
+# Copyright 2014, Cloudops.com
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# All rights reserved - Do Not Redistribute
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-#
-# Perform installation of Cloudstack and execute some recipes in the proper order.
 
-
-# load cookbook Libraries
 class Chef::Recipe
   include Cloudstack
 end
 
-if platform?(%w{redhat centos fedora})
+if platform?(%w{redhat centos})
     # Update yum repos
     template "/etc/yum.repos.d/cloudstack.repo" do
       source "cloudstack.repo.erb"
@@ -38,8 +23,14 @@ if platform?(%w{redhat centos fedora})
     
     package "cloudstack-management" do
        action :install
+       if ! node['cloudstack']['version'].empty?
+         version node['cloudstack']['version']
+       end
     end
 end
+
+# Install MySQL client libraries
+include_recipe "mysql::client"
 
 # download vhd-util script
 include_recipe "co-cloudstack::vhd-util"
@@ -47,20 +38,37 @@ include_recipe "co-cloudstack::vhd-util"
 directory node['cloudstack']['secondary']['mgt_path'] do
   owner 'root'
   group 'root'
-  recursive true
+  action :create
+end
+
+directory node['cloudstack']['primary']['mgt_path'] do
+  owner 'root'
+  group 'root'
+  action :create
+end
+
+# new required folder for CS 4.3
+directory "/opt/cloud" do
+  owner 'cloud'
+  group 'cloud'
   action :create
 end
 
 include_recipe "co-cloudstack::init-db"
 
+# Define with role if this node is the NFSserver for Secondary Storage
+#include_recipe "co-cloudstack::secondary-local-nfs"
+#include_recipe "co-cloudstack::sys-tmpl"
+
+# 
 bash "cloudstack-setup-management" do
   code "/usr/bin/cloudstack-setup-management"
   not_if { ::File.exists?("/etc/cloudstack/management/tomcat6.conf") }
 end
 
-directory "/var/log/cloudstack-management" do
-  action :delete
-end
+# directory "/var/log/cloudstack-management" do
+#   action :delete
+# end
 
 service "cloudstack-management" do
   supports :restart => true, :status => true, :start => true, :stop => true
@@ -68,7 +76,5 @@ service "cloudstack-management" do
 end
 
 
-
-include_recipe "co-cloudstack::sys-tmpl"
-include_recipe "co-cloudstack::secondary-local-nfs"
+include_recipe "co-cloudstack::usage"
 
