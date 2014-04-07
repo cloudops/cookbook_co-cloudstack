@@ -2,6 +2,9 @@ co-cloudstack CHANGELOG
 =======================
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
+2.0.3
+-----
+- Pierre-Luc - Add mysql-conf to configure mysql-server tunings required by CloudStack.
 
 2.0.2
 -----
