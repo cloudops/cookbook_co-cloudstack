@@ -11,7 +11,7 @@
 # Generate admin account API keys using API call.
 if node["cloudstack"]["admin"]["api_key"].empty?
   #chef of other cloudstack server exist and have API keys, if do , get a copy of them
-  other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND api_key:* NOT name:#{node.name}")
+  other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND cloudstack_admin_api_key:* NOT name:#{node.name}")
   if ! other_nodes.empty?
     node.normal["cloudstack"]["admin"]["api_key"] = other_nodes.first["cloudstack"]["admin"]["api_key"]
     node.normal["cloudstack"]["admin"]["secret_key"] = other_nodes.first["cloudstack"]["admin"]["secret_key"]
