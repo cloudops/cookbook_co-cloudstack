@@ -1,6 +1,10 @@
 co-cloudstack Cookbook
 ======================
 
+deprecated. use [cookbook_cloudstack](https://github.com/cloudops/cookbook_cloudstack) instead.
+
+
+
 Install and configure Apache Cloudstack cloud orchestrator. This cookbook currently support only Redhat based distributions of Linux.
 This Chef cookbook install Cloudstack based on RPMs and executes folowing steps:
 
